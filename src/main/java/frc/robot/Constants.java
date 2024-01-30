@@ -41,9 +41,9 @@ public final class Constants {
     public static final int kRearRightEncoderID = 9;
 
     // CANCoder magnetic offsets
-    public static final double kFrontLeftMagneticOffset = 132.09984;
+    public static final double kFrontLeftMagneticOffset = -117.94932; //-31.64076 //31.7286 //132.09984
     public static final double kFrontRightMagneticOffset = -56.86524;
-    public static final double kRearLeftMagneticOffset = 128.67192;
+    public static final double kRearLeftMagneticOffset = -169.89264; //128.67192
     public static final double kRearRightMagneticOffset = -105.73236;
 
     // Motor inversions
@@ -83,7 +83,7 @@ public final class Constants {
       new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
       new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
       0.2, // Max module speed, in m/s
-      0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+      0.51, // Drive base radius in meters. Distance from robot center to furthest module.
       new ReplanningConfig() // Default path replanning config. See the API for the options here
     );
   }
@@ -91,5 +91,9 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriverControllerDeadband = 0.05;
+  }
+
+  public static class IntakeConstants {
+    public static final int kIntakeMotorID = 18;
   }
 }

@@ -32,15 +32,12 @@ public class DriveTeleopCmd extends Command {
   @Override
   public void execute() {
 
-    double xSpeed = -MathUtil.applyDeadband(m_controller.getLeftY(), OperatorConstants.kDriverControllerDeadband) * 0.4;
-    double ySpeed = MathUtil.applyDeadband(m_controller.getLeftX(), OperatorConstants.kDriverControllerDeadband) * 0.4;
-    double rotSpeed = MathUtil.applyDeadband(m_controller.getRightX(), OperatorConstants.kDriverControllerDeadband) * 0.4;
+    double xSpeed = -MathUtil.applyDeadband(m_controller.getLeftY(), OperatorConstants.kDriverControllerDeadband)*0.6;
+    double ySpeed = MathUtil.applyDeadband(m_controller.getLeftX(), OperatorConstants.kDriverControllerDeadband)*0.6;
+    double rotSpeed = MathUtil.applyDeadband(m_controller.getRightX(), OperatorConstants.kDriverControllerDeadband)*0.6;
 
-    if (m_controller.rightBumper().getAsBoolean()) {
       m_swerveSubsystem.drive(xSpeed, ySpeed, rotSpeed, true);
-    } else {
-      m_swerveSubsystem.drive(xSpeed, ySpeed, rotSpeed);
-    }
+
   }
 
   // Called once the command ends or is interrupted.

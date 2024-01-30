@@ -30,7 +30,7 @@ public class RobotContainer {
 
   // Commands
   DriveTeleopCmd m_driveTeleopCmd = new DriveTeleopCmd(m_swerveSubsystem, m_driverController);
-  AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
+  //AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -54,7 +54,7 @@ public class RobotContainer {
 
     m_driverController.y().onTrue(new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem));
 
-    m_driverController.leftBumper().whileTrue(m_alignToTagCmd);
+    //m_driverController.leftBumper().whileTrue(m_alignToTagCmd);
   }
 
   /**

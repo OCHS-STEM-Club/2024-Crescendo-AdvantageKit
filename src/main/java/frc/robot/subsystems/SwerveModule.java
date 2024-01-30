@@ -28,7 +28,7 @@ public class SwerveModule {
   private final CANcoder m_turnEncoder;
 
   private final PIDController m_turnPIDController = new PIDController(ModuleConstants.kTurnP, ModuleConstants.kTurnI, ModuleConstants.kTurnD);
-  private final SlewRateLimiter m_driveLimiter = new SlewRateLimiter(0.8);
+  private final SlewRateLimiter m_driveLimiter = new SlewRateLimiter(1.5);
 
   private final String m_moduleName;
 
@@ -97,6 +97,10 @@ public class SwerveModule {
   public double getDrivePosition() {
     // Returns the drive motor position
     return m_driveEncoder.getPosition();
+  }
+
+  public double getPositionConversionFactor() {
+    return m_driveEncoder.getPositionConversionFactor();
   }
 
   public double getDriveVelocity() {

@@ -50,6 +50,8 @@ public class SwerveSubsystem extends SubsystemBase {
   );
 
   private Field2d m_field = new Field2d();
+
+  
   
   /** Creates a new SwerveSubsystem. */
   public SwerveSubsystem() {
@@ -139,7 +141,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   private void drive(ChassisSpeeds chassisSpeeds) {
-    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, false);
+    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, true);
   }
 
   public void drive(double xSpeed, double ySpeed, double rotSpeed) {
