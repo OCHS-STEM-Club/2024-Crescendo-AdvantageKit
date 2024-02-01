@@ -28,7 +28,7 @@ public class SwerveModule {
   private final CANcoder m_turnEncoder;
 
   private final PIDController m_turnPIDController = new PIDController(ModuleConstants.kTurnP, ModuleConstants.kTurnI, ModuleConstants.kTurnD);
-  private final SlewRateLimiter m_driveLimiter = new SlewRateLimiter(1.5);
+  private final SlewRateLimiter m_driveLimiter = new SlewRateLimiter(2);
 
   private final String m_moduleName;
 
@@ -123,7 +123,7 @@ public class SwerveModule {
 
     m_lastDesiredState = desiredState;
 
-    if (Math.abs(desiredState.speedMetersPerSecond) < 0.001) { // TODO: May have to increase this
+    if (Math.abs(desiredState.speedMetersPerSecond) < 0.05) { // TODO: May have to increase this
       stop();
       return;
     }
