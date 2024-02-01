@@ -35,7 +35,13 @@ public class SwerveModule {
   private SwerveModuleState m_lastDesiredState = new SwerveModuleState();
 
   /** Creates a new SwerveModule. */
-  public SwerveModule(int driveMotorID, int turnMotorID, int encoderID, double magneticOffset, boolean driveInverted, String moduleName) {
+  // public SwerveModule(int driveMotorID, int turnMotorID, int encoderID, boolean driveInverted, String moduleName) {
+  //   m_driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
+  //   m_turnMotor = new CANSparkMax(turnMotorID, MotorType.kBrushless);
+  //   m_driveEncoder = m_driveMotor.getEncoder();
+  //   m_turnEncoder = new CANcoder(encoderID);
+
+    public SwerveModule(int driveMotorID, int turnMotorID, int encoderID, double magneticOffset, boolean driveInverted, String moduleName) {
     m_driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
     m_turnMotor = new CANSparkMax(turnMotorID, MotorType.kBrushless);
     m_driveEncoder = m_driveMotor.getEncoder();
@@ -137,4 +143,5 @@ public class SwerveModule {
     m_driveMotor.set(0);
     m_turnMotor.set(0);
   }
-}
+
+  }

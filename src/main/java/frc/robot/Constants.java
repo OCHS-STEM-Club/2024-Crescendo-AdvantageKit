@@ -41,10 +41,10 @@ public final class Constants {
     public static final int kRearRightEncoderID = 9;
 
     // CANCoder magnetic offsets
-    public static final double kFrontLeftMagneticOffset = -117.94932; //-31.64076 //31.7286 //132.09984
-    public static final double kFrontRightMagneticOffset = -56.86524;
-    public static final double kRearLeftMagneticOffset = -169.89264; //128.67192
-    public static final double kRearRightMagneticOffset = -105.73236;
+    public static final double kFrontLeftMagneticOffset = 0.086670; //-31.64076 //31.7286 //132.09984
+    public static final double kFrontRightMagneticOffset = 0.163086;
+    public static final double kRearLeftMagneticOffset = -0.362793; //128.67192
+    public static final double kRearRightMagneticOffset = 0.296387;
 
     // Motor inversions
     public static final boolean kFrontLeftDriveInverted = true;
@@ -90,10 +90,16 @@ public final class Constants {
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
     public static final double kDriverControllerDeadband = 0.05;
   }
 
   public static class IntakeConstants {
     public static final int kIntakeMotorID = 18;
+  }
+
+  public static class ArmConstants {
+    public static final int kArmMotorLeftID = 19;
+    public static final int kArmMotorRightID = 20;
   }
 }

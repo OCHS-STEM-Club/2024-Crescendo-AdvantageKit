@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -27,6 +28,15 @@ import frc.robot.Constants.DriveConstants;
 
 public class SwerveSubsystem extends SubsystemBase {
 
+  // private final SwerveModule m_frontLeftModule = new SwerveModule(
+  //   DriveConstants.kFrontLeftDriveID, DriveConstants.kFrontLeftTurnID, DriveConstants.kFrontLeftEncoderID, DriveConstants.kFrontLeftDriveInverted, "FL");
+  // private final SwerveModule m_frontRightModule = new SwerveModule(
+  //   DriveConstants.kFrontRightDriveID, DriveConstants.kFrontRightTurnID, DriveConstants.kFrontRightEncoderID, DriveConstants.kFrontRightDriveInverted, "FR");
+  // private final SwerveModule m_rearLeftModule = new SwerveModule(
+  //   DriveConstants.kRearLeftDriveID, DriveConstants.kRearLeftTurnID, DriveConstants.kRearLeftEncoderID,  DriveConstants.kRearLeftDriveInverted, "RL");
+  // private final SwerveModule m_rearRightModule = new SwerveModule(
+  //   DriveConstants.kRearRightDriveID, DriveConstants.kRearRightTurnID, DriveConstants.kRearRightEncoderID, DriveConstants.kRearRightDriveInverted, "RR");
+  
   private final SwerveModule m_frontLeftModule = new SwerveModule(
     DriveConstants.kFrontLeftDriveID, DriveConstants.kFrontLeftTurnID, DriveConstants.kFrontLeftEncoderID, DriveConstants.kFrontLeftMagneticOffset, DriveConstants.kFrontLeftDriveInverted, "FL");
   private final SwerveModule m_frontRightModule = new SwerveModule(
@@ -36,7 +46,11 @@ public class SwerveSubsystem extends SubsystemBase {
   private final SwerveModule m_rearRightModule = new SwerveModule(
     DriveConstants.kRearRightDriveID, DriveConstants.kRearRightTurnID, DriveConstants.kRearRightEncoderID, DriveConstants.kRearRightMagneticOffset, DriveConstants.kRearRightDriveInverted, "RR");
   
-  private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+
+
+
+  // private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+    private final Pigeon2 m_gyro = new Pigeon2(1);
 
   private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
     DriveConstants.kDriveKinematics,

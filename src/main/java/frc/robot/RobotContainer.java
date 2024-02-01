@@ -6,13 +6,16 @@ package frc.robot;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlignToTagCmd;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.DriveTeleopCmd;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
@@ -24,9 +27,12 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class RobotContainer {
   // Subsystems
   SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
+  //ArmSubsystem m_armSubsystem = new ArmSubsystem();
 
   // Controllers
-  CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  public CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  //public CommandXboxController m_buttonBox = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
+  public XboxController m_buttonBox = new XboxController(Constants.OperatorConstants.kOperatorControllerPort);
 
   // Commands
   DriveTeleopCmd m_driveTeleopCmd = new DriveTeleopCmd(m_swerveSubsystem, m_driverController);
@@ -55,6 +61,7 @@ public class RobotContainer {
     m_driverController.y().onTrue(new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem));
 
     //m_driverController.leftBumper().whileTrue(m_alignToTagCmd);
+
   }
 
   /**
@@ -71,4 +78,6 @@ public class RobotContainer {
     // return AutoBuilder.followPathWithEvents(path);
     return null;
   }
+
+  
 }
