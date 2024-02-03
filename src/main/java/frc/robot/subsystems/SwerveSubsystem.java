@@ -159,7 +159,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void drive(double xSpeed, double ySpeed, double rotSpeed) {
-    drive(xSpeed, ySpeed, rotSpeed, false);
+    drive(xSpeed, ySpeed, rotSpeed, true);
   }
 
   public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) {
