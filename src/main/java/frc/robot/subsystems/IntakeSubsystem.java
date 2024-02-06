@@ -16,18 +16,9 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
 
     private CANSparkMax intakeMotor;
-   private RelativeEncoder intakerRelativeEncoder;
-
-
-
-
-
-
 
   public IntakeSubsystem() {
     intakeMotor = new CANSparkMax(Constants.IntakeConstants.kIntakeMotorID, MotorType.kBrushless);
-    intakerRelativeEncoder = intakeMotor.getEncoder();
-    
     };
   
 
@@ -35,5 +26,13 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void intakeOn() {
+    intakeMotor.set(0.25);
+  }
+
+  public void intakeOff() {
+    intakeMotor.set(0);
   }
 }

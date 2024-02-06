@@ -15,10 +15,16 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.autos.exampleAuto;
 import frc.robot.commands.AlignToTagCmd;
-import frc.robot.commands.ArmCommand;
+import frc.robot.commands.ArmDownCommand;
+import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.DriveTeleopCmd;
+import frc.robot.commands.IntakeInCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
@@ -30,16 +36,24 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class RobotContainer {
   // Subsystems
   SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
-  //ArmSubsystem m_armSubsystem = new ArmSubsystem();
-
+  ArmSubsystem m_armSubsystem = new ArmSubsystem();
+  IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  
   // Controllers
   public CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  //public CommandXboxController m_buttonBox = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
-  public XboxController m_buttonBox = new XboxController(Constants.OperatorConstants.kOperatorControllerPort);
+  public CommandXboxController m_buttonBox = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
 
   // Commands
   DriveTeleopCmd m_driveTeleopCmd = new DriveTeleopCmd(m_swerveSubsystem, m_driverController);
-  //AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
+  ArmDownCommand m_armDownCommand = new ArmDownCommand(m_armSubsystem);
+  ArmUpCommand m_armUpCommand = new ArmUpCommand(m_armSubsystem);
+  IntakeInCommand m_intakeCommand = new IntakeInCommand(m_intakeSubsystem);
+  ShooterCommand m_shooterCommand = new ShooterCommand(m_shooterSubsystem);
+    //AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
+
+  // Autos
+  exampleAuto m_exampleAuto = new exampleAuto(m_swerveSubsystem);
 
   private final SendableChooser<Command> autoChooser;
 
@@ -47,6 +61,7 @@ public class RobotContainer {
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(m_driveTeleopCmd);
     autoChooser = AutoBuilder.buildAutoChooser("Autos");
+    autoChooser.addOption("example", m_exampleAuto);
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
@@ -68,6 +83,13 @@ public class RobotContainer {
 
     m_driverController.y().onTrue(new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem));
 
+    m_buttonBox.pov(0).whileTrue(m_armUpCommand);
+    m_buttonBox.pov(180).whileTrue(m_armDownCommand);
+
+    m_driverController.leftTrigger().whileTrue(m_intakeCommand);
+
+    m_driverController.a().whileTrue(m_shooterCommand);
+
     //m_driverController.leftBumper().whileTrue(m_alignToTagCmd);
 
   }
@@ -85,6 +107,14 @@ public class RobotContainer {
     // // Create a path following command using AutoBuilder. This will also trigger event markers.
     // return AutoBuilder.followPathWithEvents(path);
     return autoChooser.getSelected();
+  }
+
+  public void resetGyro() {
+    m_swerveSubsystem.resetHeading();
+  }
+
+  public Command resetPose() {
+    return new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem);
   }
 
   

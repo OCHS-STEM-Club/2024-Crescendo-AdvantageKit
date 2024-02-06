@@ -10,7 +10,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.ArmCommand;
+import frc.robot.commands.ArmUpCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -20,7 +20,6 @@ import frc.robot.commands.ArmCommand;
  */
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
-  //private ArmCommand m_armCommand;
 
   private RobotContainer m_robotContainer;
 
@@ -69,6 +68,8 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    m_robotContainer.resetGyro();
+    m_robotContainer.resetPose();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -83,6 +84,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
+    //m_robotContainer.resetGyro();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
