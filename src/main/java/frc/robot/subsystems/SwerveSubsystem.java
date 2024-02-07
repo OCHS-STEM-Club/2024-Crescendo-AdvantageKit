@@ -22,7 +22,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 
@@ -46,8 +48,6 @@ public class SwerveSubsystem extends SubsystemBase {
   private final SwerveModule m_rearRightModule = new SwerveModule(
     DriveConstants.kRearRightDriveID, DriveConstants.kRearRightTurnID, DriveConstants.kRearRightEncoderID, DriveConstants.kRearRightMagneticOffset, DriveConstants.kRearRightDriveInverted, "RR");
   
-
-
 
   // private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
     private final Pigeon2 m_gyro = new Pigeon2(1);
@@ -114,6 +114,20 @@ public class SwerveSubsystem extends SubsystemBase {
     Logger.recordOutput("Robot Pose", getPose());
 
     SmartDashboard.putNumber("Pigeon Heading", m_gyro.getAngle());
+
+    // var sysIdRountine = new SysIdRoutine(
+    //   new SysIdRoutine.Config(
+    //     null, null, null,
+    //     (state) -> Logger.recordOutput("SysIdTestState", state.toString())
+    //   ),
+    //   new SysIdRoutine.Mechanism(
+    //     (voltage) -> subsystem.runVolts(voltage.in(Volts)),
+    //     null,
+    //     subsystem
+    //   )
+    // );
+    
+    
   }
 
   

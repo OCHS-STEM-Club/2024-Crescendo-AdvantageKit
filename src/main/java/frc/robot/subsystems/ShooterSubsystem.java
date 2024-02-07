@@ -29,7 +29,7 @@ private TalonFX shooterMotorRight;
   }
 
   public void shooterOn() {
-    shooterMotorLeft.set(0.4);
+    shooterMotorLeft.set(0.5);
     shooterMotorRight.set(0.4);
   }
 
