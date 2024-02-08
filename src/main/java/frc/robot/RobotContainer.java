@@ -51,6 +51,7 @@ import frc.robot.subsystems.SwerveSubsystem;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+  
 public class RobotContainer {
   // Subsystems
   SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
@@ -74,19 +75,20 @@ public class RobotContainer {
   exampleAuto m_exampleAuto = new exampleAuto(m_swerveSubsystem);
 
   private final SendableChooser<Command> autoChooser;
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(m_driveTeleopCmd);
-    autoChooser = AutoBuilder.buildAutoChooser("Autos");
-    autoChooser.addOption("example", m_exampleAuto);
+    // autoChooser = AutoBuilder.buildAutoChooser("Autos");
+   
+    autoChooser = AutoBuilder.buildAutoChooser("New Auto");
+    autoChooser.setDefaultOption("Drive straight", m_exampleAuto);
+    SmartDashboard.putData("Autos", autoChooser);
 
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
     configureBindings();
 
-
-
+  
   }
 
   /**
@@ -99,18 +101,32 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.rightBumper().onTrue(new InstantCommand(m_swerveSubsystem::resetHeading, m_swerveSubsystem));
+    m_driverController.rightBumper().onTrue(
+      new InstantCommand(m_swerveSubsystem::resetHeading, m_swerveSubsystem)
+      );
 
-    m_driverController.y().onTrue(new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem));
+    m_driverController.y().onTrue(
+      new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem)
+      );
 
-    m_buttonBox.pov(0).whileTrue(m_armUpCommand);
-    m_buttonBox.pov(180).whileTrue(m_armDownCommand);
+    m_buttonBox.pov(0).whileTrue(
+      m_armUpCommand
+      );
+    m_buttonBox.pov(180).whileTrue(
+      m_armDownCommand
+      );
 
-    m_driverController.leftTrigger().whileTrue(m_intakeCommand);
+    m_driverController.leftTrigger().whileTrue(
+      m_intakeCommand
+      );
 
-    m_driverController.a().whileTrue(m_shooterCommand);
+    m_driverController.a().whileTrue(
+      m_shooterCommand
+      );
 
-    m_driverController.leftBumper().whileTrue(m_alignToTagCmd);
+    m_driverController.leftBumper().whileTrue(
+      m_alignToTagCmd
+      );
 
   }
 
@@ -120,54 +136,47 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return new PathPlannerAuto("Auto1");
-    // Load the path you want to follow using its name in the GUI
+    m_swerveSubsystem.resetPose();
+    return autoChooser.getSelected();
+
+    // TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
+    //   AutoConstants.kMaxSpeedMetersPerSecond,
+    //   AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+    //   .setKinematics(DriveConstants.kDriveKinematics);
 
 
-    // PathPlannerPath path = PathPlannerPath.fromPathFile("Path1");
-    // return AutoBuilder.followPath(path);
-
-    // // Create a path following command using AutoBuilder. This will also trigger event markers.
-    // return AutoBuilder.followPathWithEvents(path);
-
-
-    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      AutoConstants.kMaxSpeedMetersPerSecond,
-      AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-      .setKinematics(DriveConstants.kDriveKinematics);
+    //   Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+    //     new Pose2d(0, 0, new Rotation2d(0)),
+    //     List.of(
+    //       new Translation2d(0.5, 0),
+    //       new Translation2d(1, 0)),
+    //     new Pose2d(1.5, 0, Rotation2d.fromDegrees(0)),
+    //     trajectoryConfig);
 
 
-      Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(
-          new Translation2d(0.5, 0),
-          new Translation2d(1, 0)),
-        new Pose2d(1.5, 0, Rotation2d.fromDegrees(0)),
-        trajectoryConfig);
+    //   PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
+    //   PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
+    //   ProfiledPIDController thetaController = new ProfiledPIDController(
+    //     AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+    //     thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    //     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+    //       trajectory, 
+    //       m_swerveSubsystem::getPose, 
+    //       DriveConstants.kDriveKinematics, 
+    //       xController, 
+    //       yController, 
+    //       thetaController,
+    //       m_swerveSubsystem::setModuleStates,
+    //       m_swerveSubsystem);
 
 
-      PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
-      PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-      ProfiledPIDController thetaController = new ProfiledPIDController(
-        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    //       return new SequentialCommandGroup(
+    //         new InstantCommand(() -> m_swerveSubsystem.resetPose(trajectory.getInitialPose())),
+    //         swerveControllerCommand,
+    //         new InstantCommand(() -> m_swerveSubsystem.stopModules())); 
 
-        SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-          trajectory, 
-          m_swerveSubsystem::getPose, 
-          DriveConstants.kDriveKinematics, 
-          xController, 
-          yController, 
-          thetaController,
-          m_swerveSubsystem::setModuleStates,
-          m_swerveSubsystem);
-
-
-          return new SequentialCommandGroup(
-            new InstantCommand(() -> m_swerveSubsystem.resetPose(trajectory.getInitialPose())),
-            swerveControllerCommand,
-            new InstantCommand(() -> m_swerveSubsystem.stopModules())); 
-    }
+     }
   
 
   public void resetGyro() {
