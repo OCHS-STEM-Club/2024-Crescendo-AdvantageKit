@@ -4,36 +4,13 @@
 
 package frc.robot;
 
-import java.util.List;
-
-import org.littletonrobotics.junction.Logger;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.autos.exampleAuto;
 import frc.robot.commands.AlignToTagCmd;
@@ -41,6 +18,7 @@ import frc.robot.commands.ArmDownCommand;
 import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.DriveTeleopCmd;
 import frc.robot.commands.IntakeInCommand;
+import frc.robot.commands.IntakeOverrideCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -53,7 +31,6 @@ import frc.robot.subsystems.SwerveSubsystem;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-  
 public class RobotContainer {
   // Subsystems
   SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
@@ -70,29 +47,26 @@ public class RobotContainer {
   ArmDownCommand m_armDownCommand = new ArmDownCommand(m_armSubsystem);
   ArmUpCommand m_armUpCommand = new ArmUpCommand(m_armSubsystem);
   IntakeInCommand m_intakeCommand = new IntakeInCommand(m_intakeSubsystem);
+  IntakeOverrideCommand m_IntakeOverrideCommand = new IntakeOverrideCommand(m_intakeSubsystem);
   ShooterCommand m_shooterCommand = new ShooterCommand(m_shooterSubsystem);
   AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
 
   // Autos
-  exampleAuto m_exampleAuto = new exampleAuto(m_swerveSubsystem);
+  //exampleAuto m_exampleAuto = new exampleAuto(m_swerveSubsystem);
 
-
-  private final SendableChooser<Command> autoChooser;
+  //private final SendableChooser<Command> autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(m_driveTeleopCmd);
-    // autoChooser = AutoBuilder.buildAutoChooser("Autos");
+    //autoChooser = AutoBuilder.buildAutoChooser("Autos");
    
-    autoChooser = AutoBuilder.buildAutoChooser("New Auto");
-    autoChooser.setDefaultOption("Drive straight", m_exampleAuto);
-    SmartDashboard.putData("Autos", autoChooser);
+    // autoChooser = AutoBuilder.buildAutoChooser("New Auto");
+    //autoChooser.addOption("example", m_exampleAuto);
 
-
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    // SmartDashboard.putData("Autos", autoChooser);
+    //SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
-    
     configureBindings();
-
 
   }
 
@@ -115,15 +89,18 @@ public class RobotContainer {
       );
 
     m_buttonBox.pov(0).whileTrue(
-      m_armUpCommand
-      );
+      m_armUpCommand);
+
     m_buttonBox.pov(180).whileTrue(
-      m_armDownCommand
-      );
+      m_armDownCommand);
 
     m_driverController.leftTrigger().whileTrue(
       m_intakeCommand
       );
+
+    m_driverController.rightTrigger().whileTrue(
+      m_IntakeOverrideCommand
+    );
 
     m_driverController.a().whileTrue(
       m_shooterCommand
@@ -141,48 +118,15 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    // return new PathPlannerAuto("Auto1");
+    // Load the path you want to follow using its name in the GUI
+    // PathPlannerPath path = PathPlannerPath.fromPathFile("Path1");
     m_swerveSubsystem.resetPose();
-    return autoChooser.getSelected();
-
-    // TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-    //   AutoConstants.kMaxSpeedMetersPerSecond,
-    //   AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-    //   .setKinematics(DriveConstants.kDriveKinematics);
-
-
-    //   Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-    //     new Pose2d(0, 0, new Rotation2d(0)),
-    //     List.of(
-    //       new Translation2d(0.5, 0),
-    //       new Translation2d(1, 0)),
-    //     new Pose2d(1.5, 0, Rotation2d.fromDegrees(0)),
-    //     trajectoryConfig);
-
-
-    //   PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
-    //   PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-    //   ProfiledPIDController thetaController = new ProfiledPIDController(
-    //     AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    //     thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    //     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-    //       trajectory, 
-    //       m_swerveSubsystem::getPose, 
-    //       DriveConstants.kDriveKinematics, 
-    //       xController, 
-    //       yController, 
-    //       thetaController,
-    //       m_swerveSubsystem::setModuleStates,
-    //       m_swerveSubsystem);
-
-
-    //       return new SequentialCommandGroup(
-    //         new InstantCommand(() -> m_swerveSubsystem.resetPose(trajectory.getInitialPose())),
-    //         swerveControllerCommand,
-    //         new InstantCommand(() -> m_swerveSubsystem.stopModules())); 
-
-     }
-  
+    // // Create a path following command using AutoBuilder. This will also trigger event markers.
+    // return AutoBuilder.followPathWithEvents(path);
+    //return autoChooser.getSelected();
+    return null;
+  }
 
   public void resetGyro() {
     m_swerveSubsystem.resetHeading();
@@ -199,6 +143,6 @@ public class RobotContainer {
   public void armCoastMode() {
     m_armSubsystem.armCoastMode();
   }
-  
 
+  
 }

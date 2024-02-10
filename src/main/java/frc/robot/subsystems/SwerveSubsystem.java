@@ -8,8 +8,6 @@ import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -22,9 +20,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 
@@ -49,6 +45,8 @@ public class SwerveSubsystem extends SubsystemBase {
     DriveConstants.kRearRightDriveID, DriveConstants.kRearRightTurnID, DriveConstants.kRearRightEncoderID, DriveConstants.kRearRightMagneticOffset, DriveConstants.kRearRightDriveInverted, "RR");
   
 
+
+
   // private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
     private final Pigeon2 m_gyro = new Pigeon2(1);
 
@@ -69,37 +67,22 @@ public class SwerveSubsystem extends SubsystemBase {
   
   /** Creates a new SwerveSubsystem. */
   public SwerveSubsystem() {
-    // Configure AutoBuilder
-    AutoBuilder.configureHolonomic(
-      this::getPose, // Robot pose supplier
-      this::resetPose, // Method to reset odometry
-      this::getRobotRelativeSpeeds, // ChassisSpeeds supplier (Robot relative)
-      this::drive1, // Method to drive the robot (Robot relative)
-      AutoConstants.kHolonomicPathFollowerConfig,
-      () -> {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-          return alliance.get() == DriverStation.Alliance.Red;
-        }
-        return false;
-      },
-      this
-    );
-
-    // var sysIdRountine = new SysIdRoutine(
-    // new SysIdRoutine.Config(
-    //   null, null, null, // Use default config
-    //   (state) -> Logger.recordOutput("SysIdTestState", state.toString())
-    // ),
-    // new SysIdRoutine.Mechanism(
-    //   (voltage) -> Subsystem.runVolts(voltage.in(Volts)),
-    //   null, // No log consumer, since data is recorded by AdvantageKit
+    // // Configure AutoBuilder
+    // AutoBuilder.configureHolonomic(
+    //   this::getPose, // Robot pose supplier
+    //   this::resetPose, // Method to reset odometry
+    //   this::getRobotRelativeSpeeds, // ChassisSpeeds supplier (Robot relative)
+    //   this::drive1, // Method to drive the robot (Robot relative)
+    //   AutoConstants.kHolonomicPathFollowerConfig,
+    //   () -> {
+    //     var alliance = DriverStation.getAlliance();
+    //     if (alliance.isPresent()) {
+    //       return alliance.get() == DriverStation.Alliance.Red;
+    //     }
+    //     return false;
+    //   },
     //   this
-    // )
-    //);
-    
-    // new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
-
+    // );
   }
 
   @Override
@@ -129,20 +112,6 @@ public class SwerveSubsystem extends SubsystemBase {
     Logger.recordOutput("Robot Pose", getPose());
 
     SmartDashboard.putNumber("Pigeon Heading", m_gyro.getAngle());
-
-    // var sysIdRountine = new SysIdRoutine(
-    //   new SysIdRoutine.Config(
-    //     null, null, null,
-    //     (state) -> Logger.recordOutput("SysIdTestState", state.toString())
-    //   ),
-    //   new SysIdRoutine.Mechanism(
-    //     (voltage) -> subsystem.runVolts(voltage.in(Volts)),
-    //     null,
-    //     subsystem
-    //   )
-    // );
-    
-    
   }
 
   

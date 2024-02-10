@@ -26,10 +26,10 @@ public class ArmSubsystem extends SubsystemBase {
     armMotorRight = new CANSparkMax(Constants.ArmConstants.kArmMotorRightID, MotorType.kBrushless);
     armEncoderLeft = armMotorLeft.getEncoder();
     armEncoderRight = armMotorRight.getEncoder();
-    armMotorLeft.setInverted(false);
+    armMotorLeft.setIdleMode(IdleMode.kBrake);
+    armMotorRight.setIdleMode(IdleMode.kBrake);
+    armMotorLeft.setInverted(true);
     armMotorRight.setInverted(false);
-
-    armMotorLeft.follow(armMotorRight);
   }
 
   @Override
