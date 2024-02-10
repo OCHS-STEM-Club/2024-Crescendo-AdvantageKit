@@ -85,6 +85,21 @@ public class SwerveSubsystem extends SubsystemBase {
       },
       this
     );
+
+    // var sysIdRountine = new SysIdRoutine(
+    // new SysIdRoutine.Config(
+    //   null, null, null, // Use default config
+    //   (state) -> Logger.recordOutput("SysIdTestState", state.toString())
+    // ),
+    // new SysIdRoutine.Mechanism(
+    //   (voltage) -> Subsystem.runVolts(voltage.in(Volts)),
+    //   null, // No log consumer, since data is recorded by AdvantageKit
+    //   this
+    // )
+    //);
+    
+    // new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
+
   }
 
   @Override

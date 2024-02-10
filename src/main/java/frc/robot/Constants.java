@@ -124,5 +124,8 @@ public final class Constants {
   public static class ShooterConstants {
     public static final int kShooterMotorLeftID = 21;
     public static final int kShooterMotorRightID = 22;
+
+    public static final int kMaxRPM = 5800;
+    // public static final double kMaxRPMtoPercent = 
   }
 }

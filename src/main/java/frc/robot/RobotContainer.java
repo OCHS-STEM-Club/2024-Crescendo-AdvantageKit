@@ -20,12 +20,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -74,6 +76,7 @@ public class RobotContainer {
   // Autos
   exampleAuto m_exampleAuto = new exampleAuto(m_swerveSubsystem);
 
+
   private final SendableChooser<Command> autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -84,11 +87,13 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Drive straight", m_exampleAuto);
     SmartDashboard.putData("Autos", autoChooser);
 
+
     // SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
+    
     configureBindings();
 
-  
+
   }
 
   /**
