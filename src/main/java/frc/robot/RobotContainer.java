@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +18,7 @@ import frc.robot.commands.ArmDownCommand;
 import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.DriveTeleopCmd;
 import frc.robot.commands.IntakeInCommand;
+import frc.robot.commands.IntakeOverrideCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -49,21 +47,24 @@ public class RobotContainer {
   ArmDownCommand m_armDownCommand = new ArmDownCommand(m_armSubsystem);
   ArmUpCommand m_armUpCommand = new ArmUpCommand(m_armSubsystem);
   IntakeInCommand m_intakeCommand = new IntakeInCommand(m_intakeSubsystem);
+  IntakeOverrideCommand m_IntakeOverrideCommand = new IntakeOverrideCommand(m_intakeSubsystem);
   ShooterCommand m_shooterCommand = new ShooterCommand(m_shooterSubsystem);
-    //AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
+  AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
 
   // Autos
-  exampleAuto m_exampleAuto = new exampleAuto(m_swerveSubsystem);
+  //exampleAuto m_exampleAuto = new exampleAuto(m_swerveSubsystem);
 
-  private final SendableChooser<Command> autoChooser;
-
+  //private final SendableChooser<Command> autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(m_driveTeleopCmd);
-    autoChooser = AutoBuilder.buildAutoChooser("Autos");
-    autoChooser.addOption("example", m_exampleAuto);
+    //autoChooser = AutoBuilder.buildAutoChooser("Autos");
+   
+    // autoChooser = AutoBuilder.buildAutoChooser("New Auto");
+    //autoChooser.addOption("example", m_exampleAuto);
 
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // SmartDashboard.putData("Autos", autoChooser);
+    //SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
     configureBindings();
 
@@ -79,18 +80,35 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.rightBumper().onTrue(new InstantCommand(m_swerveSubsystem::resetHeading, m_swerveSubsystem));
+    m_driverController.rightBumper().onTrue(
+      new InstantCommand(m_swerveSubsystem::resetHeading, m_swerveSubsystem)
+      );
 
-    m_driverController.y().onTrue(new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem));
+    m_driverController.y().onTrue(
+      new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem)
+      );
 
-    m_buttonBox.pov(0).whileTrue(m_armUpCommand);
-    m_buttonBox.pov(180).whileTrue(m_armDownCommand);
+    m_buttonBox.pov(0).whileTrue(
+      m_armUpCommand);
 
-    m_driverController.leftTrigger().whileTrue(m_intakeCommand);
+    m_buttonBox.pov(180).whileTrue(
+      m_armDownCommand);
 
-    m_driverController.a().whileTrue(m_shooterCommand);
+    m_driverController.leftTrigger().whileTrue(
+      m_intakeCommand
+      );
 
-    //m_driverController.leftBumper().whileTrue(m_alignToTagCmd);
+    m_driverController.rightTrigger().whileTrue(
+      m_IntakeOverrideCommand
+    );
+
+    m_driverController.a().whileTrue(
+      m_shooterCommand
+      );
+
+    m_driverController.leftBumper().whileTrue(
+      m_alignToTagCmd
+      );
 
   }
 
@@ -103,10 +121,11 @@ public class RobotContainer {
     // return new PathPlannerAuto("Auto1");
     // Load the path you want to follow using its name in the GUI
     // PathPlannerPath path = PathPlannerPath.fromPathFile("Path1");
-
+    m_swerveSubsystem.resetPose();
     // // Create a path following command using AutoBuilder. This will also trigger event markers.
     // return AutoBuilder.followPathWithEvents(path);
-    return autoChooser.getSelected();
+    //return autoChooser.getSelected();
+    return null;
   }
 
   public void resetGyro() {
@@ -115,6 +134,14 @@ public class RobotContainer {
 
   public Command resetPose() {
     return new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem);
+  }
+
+  public void armBrakeMode() {
+    m_armSubsystem.armBrakeMode();
+  }
+
+  public void armCoastMode() {
+    m_armSubsystem.armCoastMode();
   }
 
   

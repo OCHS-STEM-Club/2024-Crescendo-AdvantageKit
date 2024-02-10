@@ -4,8 +4,16 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
+import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
@@ -14,6 +22,9 @@ public class ShooterSubsystem extends SubsystemBase {
 private TalonFX shooterMotorLeft;
 private TalonFX shooterMotorRight;
 
+final VelocityVoltage m_velocity = new VelocityVoltage(0);
+final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+
 
   public ShooterSubsystem() {
     shooterMotorLeft = new TalonFX(ShooterConstants.kShooterMotorLeftID);
@@ -21,11 +32,43 @@ private TalonFX shooterMotorRight;
 
     shooterMotorLeft.setInverted(false);
     shooterMotorRight.setInverted(false);
+
+    shooterMotorLeft.setNeutralMode(NeutralModeValue.Coast);
+    shooterMotorRight.setNeutralMode(NeutralModeValue.Coast);
+
+    var TalonFXConfigsLeft = new TalonFXConfiguration();
+
+    //in init function, set slot 0 gaind
+    var slot0ConfigsLeft = TalonFXConfigsLeft.Slot0;
+    slot0ConfigsLeft.kP = 0.1; // An error of 0.5 rotations results in 12 V output
+    slot0ConfigsLeft.kI = 0; // no output for integrated error
+    slot0ConfigsLeft.kD = 0; //A velocity of 1 rps results in 0.1 V output5
+
+
+    shooterMotorLeft.getConfigurator().apply(slot0ConfigsLeft);
+
+    var TalonFXConfigsRight = new TalonFXConfiguration();
+    // in init function, set slot 0 gains
+    var slot0ConfigsRight = TalonFXConfigsRight.Slot0;
+    slot0ConfigsRight.kP = 0.1; // An error of 0.5 rotations results in 12 V output
+    slot0ConfigsRight.kI = 0; // no output for integrated error
+    slot0ConfigsRight.kD = 0; //A velocity of 1 rps results in 0.1 V output5
+
+
+    shooterMotorRight.getConfigurator().apply(slot0ConfigsRight);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("leftShooterVelocity", leftShooterVelocity().getValueAsDouble());
+    SmartDashboard.putNumber("rightShooterVelocity", rightShooterVelocity().getValueAsDouble());
+
+    Logger.recordOutput("Left Shooter Velocity", leftShooterVelocity().getValueAsDouble());
+    Logger.recordOutput("Right Shooter Velocity", rightShooterVelocity().getValueAsDouble());
+
+    m_velocity.Slot = 0;
+
   }
 
   public void shooterOn() {
@@ -38,4 +81,12 @@ private TalonFX shooterMotorRight;
     shooterMotorRight.set(0);
   }
 
+
+  public StatusSignal<Double> leftShooterVelocity() {
+    return shooterMotorLeft.getVelocity();
+  }
+
+  public StatusSignal<Double> rightShooterVelocity() {
+    return shooterMotorRight.getVelocity();
+  }
 }

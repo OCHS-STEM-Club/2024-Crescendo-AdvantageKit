@@ -52,4 +52,14 @@ public class ArmSubsystem extends SubsystemBase {
     armMotorLeft.set(0);
     armMotorRight.set(0);
   }
+
+  public void armBrakeMode() {
+    armMotorLeft.setIdleMode(IdleMode.kBrake);
+    armMotorRight.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void armCoastMode() {
+    armMotorLeft.setIdleMode(IdleMode.kCoast);
+    armMotorRight.setIdleMode(IdleMode.kCoast);
+  }
 }

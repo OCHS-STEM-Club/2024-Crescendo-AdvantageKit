@@ -7,11 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeInCommand extends Command {
+public class IntakeOverrideCommand extends Command {
+  /** Creates a new IntakeOverrideCommand. */
 
-  IntakeSubsystem m_intakeSubsystem;
-  /** Creates a new IntakeCommand. */
-  public IntakeInCommand(IntakeSubsystem intakeSubsystem) {
+IntakeSubsystem m_intakeSubsystem;
+  public IntakeOverrideCommand(IntakeSubsystem intakeSubsystem) {
   m_intakeSubsystem = intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -23,10 +23,7 @@ public class IntakeInCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   if (m_intakeSubsystem.beamBreakSensor() == true) {
-     m_intakeSubsystem.intakeOn();
-   } else m_intakeSubsystem.intakeOff();
-   
+    m_intakeSubsystem.intakeOn();
   }
 
   // Called once the command ends or is interrupted.

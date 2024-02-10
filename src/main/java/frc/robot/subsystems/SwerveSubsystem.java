@@ -8,8 +8,6 @@ import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -69,22 +67,22 @@ public class SwerveSubsystem extends SubsystemBase {
   
   /** Creates a new SwerveSubsystem. */
   public SwerveSubsystem() {
-    // Configure AutoBuilder
-    AutoBuilder.configureHolonomic(
-      this::getPose, // Robot pose supplier
-      this::resetPose, // Method to reset odometry
-      this::getRobotRelativeSpeeds, // ChassisSpeeds supplier (Robot relative)
-      this::drive1, // Method to drive the robot (Robot relative)
-      AutoConstants.kHolonomicPathFollowerConfig,
-      () -> {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-          return alliance.get() == DriverStation.Alliance.Red;
-        }
-        return false;
-      },
-      this
-    );
+    // // Configure AutoBuilder
+    // AutoBuilder.configureHolonomic(
+    //   this::getPose, // Robot pose supplier
+    //   this::resetPose, // Method to reset odometry
+    //   this::getRobotRelativeSpeeds, // ChassisSpeeds supplier (Robot relative)
+    //   this::drive1, // Method to drive the robot (Robot relative)
+    //   AutoConstants.kHolonomicPathFollowerConfig,
+    //   () -> {
+    //     var alliance = DriverStation.getAlliance();
+    //     if (alliance.isPresent()) {
+    //       return alliance.get() == DriverStation.Alliance.Red;
+    //     }
+    //     return false;
+    //   },
+    //   this
+    // );
   }
 
   @Override

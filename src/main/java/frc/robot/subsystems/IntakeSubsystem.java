@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -16,16 +19,20 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
 
     private CANSparkMax intakeMotor;
+    private DigitalInput intakeSensor;
 
   public IntakeSubsystem() {
     intakeMotor = new CANSparkMax(Constants.IntakeConstants.kIntakeMotorID, MotorType.kBrushless);
-    };
+    intakeSensor = new DigitalInput(9);
+    }
   
 
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    Logger.recordOutput("Digital Input sensor", intakeSensor.get());
   }
 
   public void intakeOn() {
@@ -34,5 +41,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void intakeOff() {
     intakeMotor.set(0);
+  }
+
+  public boolean beamBreakSensor() {
+    return intakeSensor.get();
   }
 }
