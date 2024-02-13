@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -37,12 +41,19 @@ public class RobotContainer {
   // Commands
   DriveTeleopCmd m_driveTeleopCmd = new DriveTeleopCmd(m_swerveSubsystem, m_driverController);
   //AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
+  // private final SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(m_driveTeleopCmd);
+    // autoChooser = AutoBuilder.buildAutoChooser(null);
+   
+    // autoChooser = AutoBuilder.buildAutoChooser();
+    // // autoChooser.addOption("example", m_exampleAuto);
 
-    // Configure the trigger bindings
+    // // SmartDashboard.putData("Autos", autoChooser);
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    // // Configure the trigger bindings
     configureBindings();
   }
 
@@ -72,11 +83,12 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("Auto1");
     // Load the path you want to follow using its name in the GUI
-    // PathPlannerPath path = PathPlannerPath.fromPathFile("Path1");
-
+    PathPlannerPath path = PathPlannerPath.fromPathFile("hi");
+    m_swerveSubsystem.resetPose();
     // // Create a path following command using AutoBuilder. This will also trigger event markers.
-    // return AutoBuilder.followPathWithEvents(path);
-    return null;
+    // return null;
+    return AutoBuilder.followPath(path);
+    // return null;
   }
 
   

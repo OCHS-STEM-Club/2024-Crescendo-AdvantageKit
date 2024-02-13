@@ -10,6 +10,7 @@ import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -58,6 +59,8 @@ public class SwerveModule {
     // Drive encoder configuration
     m_driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderPositionFactor);
     m_driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderVelocityFactor);
+
+    m_driveMotor.setIdleMode(IdleMode.kBrake);
 
     // Turn encoder configuration
     CANcoderConfiguration config = new CANcoderConfiguration();

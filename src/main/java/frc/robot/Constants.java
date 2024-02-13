@@ -41,10 +41,10 @@ public final class Constants {
     public static final int kRearRightEncoderID = 9;
 
     // CANCoder magnetic offsets
-    public static final double kFrontLeftMagneticOffset = 0.086670; //-31.64076 //31.7286 //132.09984
-    public static final double kFrontRightMagneticOffset = 0.163086;
-    public static final double kRearLeftMagneticOffset = -0.362793; //128.67192
-    public static final double kRearRightMagneticOffset = 0.296387;
+    public static final double kFrontLeftMagneticOffset = 0.215332; //-31.64076 //31.7286 //132.09984
+    public static final double kFrontRightMagneticOffset = -0.379639;
+    public static final double kRearLeftMagneticOffset = -0.055664; //128.67192
+    public static final double kRearRightMagneticOffset = -0.090820;
 
     // Motor inversions
     public static final boolean kFrontLeftDriveInverted = true;
@@ -80,8 +80,8 @@ public final class Constants {
 
   public static class AutoConstants {
     public static final HolonomicPathFollowerConfig kHolonomicPathFollowerConfig = new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-      new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-      new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+      new PIDConstants(0.01, 0.0, 0.0), // Translation PID constants
+      new PIDConstants(0.4, 0.0, 0.0), // Rotation PID constants
       0.5, // Max module speed, in m/s
       0.51, // Drive base radius in meters. Distance from robot center to furthest module.
       new ReplanningConfig() // Default path replanning config. See the API for the options here

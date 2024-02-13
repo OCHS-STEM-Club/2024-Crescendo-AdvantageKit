@@ -74,7 +74,7 @@ public class SwerveSubsystem extends SubsystemBase {
       this::getPose, // Robot pose supplier
       this::resetPose, // Method to reset odometry
       this::getRobotRelativeSpeeds, // ChassisSpeeds supplier (Robot relative)
-      this::drive, // Method to drive the robot (Robot relative)
+      this::drive1, // Method to drive the robot (Robot relative)
       AutoConstants.kHolonomicPathFollowerConfig,
       () -> {
         var alliance = DriverStation.getAlliance();
@@ -157,6 +157,10 @@ public class SwerveSubsystem extends SubsystemBase {
   private void drive(ChassisSpeeds chassisSpeeds) {
     drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, true);
   }
+
+   private void drive1(ChassisSpeeds chassisSpeeds) {
+    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, false);
+   }
 
   public void drive(double xSpeed, double ySpeed, double rotSpeed) {
     drive(xSpeed, ySpeed, rotSpeed, false);
