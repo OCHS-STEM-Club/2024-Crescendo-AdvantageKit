@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -54,17 +57,17 @@ public class RobotContainer {
   // Autos
   //exampleAuto m_exampleAuto = new exampleAuto(m_swerveSubsystem);
 
-  //private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(m_driveTeleopCmd);
-    //autoChooser = AutoBuilder.buildAutoChooser("Autos");
+    autoChooser = AutoBuilder.buildAutoChooser("Autos");
    
     // autoChooser = AutoBuilder.buildAutoChooser("New Auto");
-    //autoChooser.addOption("example", m_exampleAuto);
+    // autoChooser.addOption("example", m_exampleAuto);
 
     // SmartDashboard.putData("Autos", autoChooser);
-    //SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
     configureBindings();
 
@@ -120,12 +123,12 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("Auto1");
     // Load the path you want to follow using its name in the GUI
-    // PathPlannerPath path = PathPlannerPath.fromPathFile("Path1");
+    // PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
     m_swerveSubsystem.resetPose();
     // // Create a path following command using AutoBuilder. This will also trigger event markers.
-    // return AutoBuilder.followPathWithEvents(path);
-    //return autoChooser.getSelected();
-    return null;
+    // return AutoBuilder.followPath(path);
+    return autoChooser.getSelected();
+    // return null;
   }
 
   public void resetGyro() {

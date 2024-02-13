@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -93,13 +97,13 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
-    // public static final HolonomicPathFollowerConfig kHolonomicPathFollowerConfig = new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-    //   new PIDConstants(0.01, 0.0, 0.0), // Translation PID constants
-    //   new PIDConstants(0.4, 0.0, 0.0), // Rotation PID constants
-    //   0.5, // Max module speed, in m/s
-    //   0.51, // Drive base radius in meters. Distance from robot center to furthest module.
-    //   new ReplanningConfig() // Default path replanning config. See the API for the options here
-    // );
+    public static final HolonomicPathFollowerConfig kHolonomicPathFollowerConfig = new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+      new PIDConstants(0.01, 0.0, 0.0), // Translation PID constants
+      new PIDConstants(0.4, 0.0, 0.0), // Rotation PID constants
+      0.5, // Max module speed, in m/s
+      0.51, // Drive base radius in meters. Distance from robot center to furthest module.
+      new ReplanningConfig() // Default path replanning config. See the API for the options here
+    );
   }
 
   public static class OperatorConstants {
