@@ -40,19 +40,21 @@ public class RobotContainer {
 
   // Commands
   DriveTeleopCmd m_driveTeleopCmd = new DriveTeleopCmd(m_swerveSubsystem, m_driverController);
+
   //AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
-  // private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(m_driveTeleopCmd);
-    // autoChooser = AutoBuilder.buildAutoChooser(null);
+    autoChooser = AutoBuilder.buildAutoChooser();
    
+
     // autoChooser = AutoBuilder.buildAutoChooser();
     // // autoChooser.addOption("example", m_exampleAuto);
 
     // // SmartDashboard.putData("Autos", autoChooser);
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
     // // Configure the trigger bindings
     configureBindings();
   }
@@ -71,6 +73,8 @@ public class RobotContainer {
 
     m_driverController.y().onTrue(new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem));
 
+    
+
     //m_driverController.leftBumper().whileTrue(m_alignToTagCmd);
 
   }
@@ -83,13 +87,16 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("Auto1");
     // Load the path you want to follow using its name in the GUI
-    PathPlannerPath path = PathPlannerPath.fromPathFile("hi");
-    m_swerveSubsystem.resetPose();
+    // PathPlannerPath path = PathPlannerPath.fromPathFile("hi");
+    //m_swerveSubsystem.resetPose();
     // // Create a path following command using AutoBuilder. This will also trigger event markers.
     // return null;
-    return AutoBuilder.followPath(path);
+    return autoChooser.getSelected();
     // return null;
   }
 
+  public void resetGyro() {
+    // m_swerveSubsystem.resetHeading();
+  }
   
 }

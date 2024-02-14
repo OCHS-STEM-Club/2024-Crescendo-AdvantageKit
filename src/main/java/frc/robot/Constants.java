@@ -74,7 +74,7 @@ public final class Constants {
     public static final double kTurnD = 0;
 
     // Motor conversion factors
-    public static final double kDriveEncoderPositionFactor = 0.0434782608695652;
+    public static final double kDriveEncoderPositionFactor =  0.03921201641335663;
     public static final double kDriveEncoderVelocityFactor = kDriveEncoderPositionFactor / 60.0;
   }
 

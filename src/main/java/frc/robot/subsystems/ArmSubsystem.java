@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.GroupMotorControllers;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,6 +26,10 @@ public class ArmSubsystem extends SubsystemBase {
     armMotorRight = new CANSparkMax(Constants.ArmConstants.kArmMotorRightID, MotorType.kBrushless);
     armEncoderLeft = armMotorLeft.getEncoder();
     armEncoderRight = armMotorRight.getEncoder();
+    armMotorLeft.setIdleMode(IdleMode.kBrake);
+    armMotorRight.setIdleMode(IdleMode.kBrake);
+    armMotorLeft.setInverted(true);
+    armMotorRight.setInverted(false);
   }
 
   @Override
@@ -34,17 +39,27 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void armMotorUp() {
-    armMotorLeft.set(0.5);
-    armMotorRight.set(0.5);
+    armMotorLeft.set(0.3);
+    armMotorRight.set(0.3);
   }
 
   public void armMotorDown() {
-    armMotorLeft.set(-0.5);
-    armMotorRight.set(-0.5);
+    armMotorLeft.set(-0.3);
+    armMotorRight.set(-0.3);
   }
 
   public void armOff() {
     armMotorLeft.set(0);
     armMotorRight.set(0);
+  }
+
+  public void armBrakeMode(){
+    armMotorLeft.setIdleMode(IdleMode.kBrake);
+    armMotorRight.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void armCoastMode(){
+    armMotorLeft.setIdleMode(IdleMode.kCoast);
+    armMotorRight.setIdleMode(IdleMode.kCoast);
   }
 }
