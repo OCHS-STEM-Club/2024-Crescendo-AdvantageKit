@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.GroupMotorControllers;
+import com.ctre.phoenix6.controls.Follower;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -28,8 +30,11 @@ public class ArmSubsystem extends SubsystemBase {
     armEncoderRight = armMotorRight.getEncoder();
     armMotorLeft.setIdleMode(IdleMode.kBrake);
     armMotorRight.setIdleMode(IdleMode.kBrake);
-    armMotorLeft.setInverted(true);
+    armMotorLeft.setInverted(false);
     armMotorRight.setInverted(false);
+    
+    armMotorLeft.follow(armMotorRight);
+    
   }
 
   @Override
@@ -53,12 +58,12 @@ public class ArmSubsystem extends SubsystemBase {
     armMotorRight.set(0);
   }
 
-  public void armBrakeMode(){
+  public void armBrakeMode() {
     armMotorLeft.setIdleMode(IdleMode.kBrake);
     armMotorRight.setIdleMode(IdleMode.kBrake);
   }
 
-  public void armCoastMode(){
+  public void armCoastMode() {
     armMotorLeft.setIdleMode(IdleMode.kCoast);
     armMotorRight.setIdleMode(IdleMode.kCoast);
   }

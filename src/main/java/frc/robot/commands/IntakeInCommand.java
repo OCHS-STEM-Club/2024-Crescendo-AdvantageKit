@@ -5,14 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class ArmDownCommand extends Command {
-  /** Creates a new ArmDownCommand. */
-  private final ArmSubsystem m_armSubsystem;
-  public ArmDownCommand(ArmSubsystem armSubsystem) {
+public class IntakeInCommand extends Command {
+
+  IntakeSubsystem m_intakeSubsystem;
+  /** Creates a new IntakeCommand. */
+  public IntakeInCommand(IntakeSubsystem intakeSubsystem) {
+  m_intakeSubsystem = intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    m_armSubsystem = armSubsystem;
   }
 
   // Called when the command is initially scheduled.
@@ -22,13 +23,16 @@ public class ArmDownCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_armSubsystem.armMotorDown();
+   if (m_intakeSubsystem.beamBreakSensor() == true) {
+     m_intakeSubsystem.intakeOn();
+   } else m_intakeSubsystem.intakeOff();
+   
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_armSubsystem.armOff();
+    m_intakeSubsystem.intakeOff();
   }
 
   // Returns true when the command should end.

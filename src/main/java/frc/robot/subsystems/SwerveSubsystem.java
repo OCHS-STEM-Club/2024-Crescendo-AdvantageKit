@@ -112,7 +112,11 @@ public class SwerveSubsystem extends SubsystemBase {
     // AdvantageKit logging
     Logger.recordOutput("Robot Angle", getHeading());
     Logger.recordOutput("Robot Pose", getPose());
+
+    SmartDashboard.putNumber("Pigeon Heading", m_gyro.getAngle());
   }
+
+  
 
   public Rotation2d getHeading() {
     // Returns the gyro heading (inverted because we want positive clockwise rotation)
@@ -158,12 +162,12 @@ public class SwerveSubsystem extends SubsystemBase {
     drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, true);
   }
 
-   private void drive1(ChassisSpeeds chassisSpeeds) {
+  private void drive1(ChassisSpeeds chassisSpeeds) {
     drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, false);
-   }
+  }
 
   public void drive(double xSpeed, double ySpeed, double rotSpeed) {
-    drive(xSpeed, ySpeed, rotSpeed, false);
+    drive(xSpeed, ySpeed, rotSpeed, true);
   }
 
   public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) {

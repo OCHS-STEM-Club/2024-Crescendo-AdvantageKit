@@ -18,16 +18,13 @@ import frc.robot.Constants;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
 
-  private CANSparkMax intakeMotor;
-   private RelativeEncoder intakerRelativeEncoder;
-   private DigitalInput intakeSensor;
-
+    private CANSparkMax intakeMotor;
+    private DigitalInput intakeSensor;
 
   public IntakeSubsystem() {
     intakeMotor = new CANSparkMax(Constants.IntakeConstants.kIntakeMotorID, MotorType.kBrushless);
-    intakerRelativeEncoder = intakeMotor.getEncoder();
     intakeSensor = new DigitalInput(9);
-    };
+    }
   
 
 
@@ -35,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    Logger.recordOutput("Digital Input Sensor", intakeSensor.get());
+    Logger.recordOutput("Digital Input sensor", intakeSensor.get());
   }
 
   public void intakeOn() {
@@ -49,5 +46,4 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean beamBreakSensor() {
     return intakeSensor.get();
   }
-
 }

@@ -5,8 +5,6 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,10 +14,17 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+// import frc.robot.autos.exampleAuto;
 import frc.robot.commands.AlignToTagCmd;
-import frc.robot.commands.ArmCommand;
+import frc.robot.commands.ArmDownCommand;
+import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.DriveTeleopCmd;
+import frc.robot.commands.IntakeInCommand;
+import frc.robot.commands.IntakeOverrideCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
@@ -31,32 +36,40 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class RobotContainer {
   // Subsystems
   SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
-  //ArmSubsystem m_armSubsystem = new ArmSubsystem();
-
+  ArmSubsystem m_armSubsystem = new ArmSubsystem();
+  IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  
   // Controllers
   public CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  //public CommandXboxController m_buttonBox = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
-  public XboxController m_buttonBox = new XboxController(Constants.OperatorConstants.kOperatorControllerPort);
+  public CommandXboxController m_buttonBox = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
 
   // Commands
   DriveTeleopCmd m_driveTeleopCmd = new DriveTeleopCmd(m_swerveSubsystem, m_driverController);
+  ArmDownCommand m_armDownCommand = new ArmDownCommand(m_armSubsystem);
+  ArmUpCommand m_armUpCommand = new ArmUpCommand(m_armSubsystem);
+  IntakeInCommand m_intakeCommand = new IntakeInCommand(m_intakeSubsystem);
+  IntakeOverrideCommand m_IntakeOverrideCommand = new IntakeOverrideCommand(m_intakeSubsystem);
+  ShooterCommand m_shooterCommand = new ShooterCommand(m_shooterSubsystem);
+  AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
 
-  //AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
+  // Autos
+  //exampleAuto m_exampleAuto = new exampleAuto(m_swerveSubsystem);
+
   private final SendableChooser<Command> autoChooser;
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(m_driveTeleopCmd);
     autoChooser = AutoBuilder.buildAutoChooser();
    
+    // autoChooser = AutoBuilder.buildAutoChooser("New Auto");
+    //autoChooser.addOption("example", m_exampleAuto);
 
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // // autoChooser.addOption("example", m_exampleAuto);
-
-    // // SmartDashboard.putData("Autos", autoChooser);
-    SmartDashboard.putData("Auto Chooser", autoChooser);
-    // // Configure the trigger bindings
+    // SmartDashboard.putData("Autos", autoChooser);
+    //SmartDashboard.putData("Auto Chooser", autoChooser);
+    // Configure the trigger bindings
     configureBindings();
+
   }
 
   /**
@@ -69,13 +82,35 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.rightBumper().onTrue(new InstantCommand(m_swerveSubsystem::resetHeading, m_swerveSubsystem));
+    m_driverController.rightBumper().onTrue(
+      new InstantCommand(m_swerveSubsystem::resetHeading, m_swerveSubsystem)
+      );
 
-    m_driverController.y().onTrue(new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem));
+    m_driverController.y().onTrue(
+      new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem)
+      );
 
-    
+    m_buttonBox.pov(0).whileTrue(
+      m_armUpCommand);
 
-    //m_driverController.leftBumper().whileTrue(m_alignToTagCmd);
+    m_buttonBox.pov(180).whileTrue(
+      m_armDownCommand);
+
+    m_driverController.leftTrigger().whileTrue(
+      m_intakeCommand
+      );
+
+    m_driverController.rightTrigger().whileTrue(
+      m_IntakeOverrideCommand
+    );
+
+    m_driverController.a().whileTrue(
+      m_shooterCommand
+      );
+
+    // m_driverController.leftBumper().whileTrue(
+    //   m_alignToTagCmd
+    //   );
 
   }
 
@@ -83,20 +118,37 @@ public class RobotContainer {
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
+   * 
    */
+  
+
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("Auto1");
+    // autoChooser = AutoBuilder.buildAutoChooser();
     // Load the path you want to follow using its name in the GUI
-    // PathPlannerPath path = PathPlannerPath.fromPathFile("hi");
-    //m_swerveSubsystem.resetPose();
+    // PathPlannerPath path = PathPlannerPath.fromPathFile("Path1");
+    m_swerveSubsystem.resetPose();
     // // Create a path following command using AutoBuilder. This will also trigger event markers.
-    // return null;
+    // return AutoBuilder.followPathWithEvents(path);
+    //return autoChooser.getSelected();
     return autoChooser.getSelected();
-    // return null;
   }
 
   public void resetGyro() {
-    // m_swerveSubsystem.resetHeading();
+    m_swerveSubsystem.resetHeading();
   }
+
+  public Command resetPose() {
+    return new InstantCommand(m_swerveSubsystem::resetPose, m_swerveSubsystem);
+  }
+
+  public void armBrakeMode() {
+    m_armSubsystem.armBrakeMode();
+  }
+
+  public void armCoastMode() {
+    m_armSubsystem.armCoastMode();
+  }
+
   
 }
