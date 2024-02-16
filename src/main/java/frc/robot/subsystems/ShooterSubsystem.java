@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.time.Instant;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.StatusSignal;
@@ -14,6 +16,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
@@ -74,6 +78,10 @@ final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
   public void shooterOn() {
     shooterMotorLeft.set(0.4);
     shooterMotorRight.set(0.4);
+  }
+
+  public InstantCommand shooterShoot(){
+    return new InstantCommand(() -> shooterOn(), this);
   }
 
   public void shooterOff() {

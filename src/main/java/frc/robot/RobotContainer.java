@@ -4,8 +4,17 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
+import java.util.List;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,6 +29,7 @@ import frc.robot.commands.ArmDownCommand;
 import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.DriveTeleopCmd;
 import frc.robot.commands.IntakeInCommand;
+import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.IntakeOverrideCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -49,6 +59,7 @@ public class RobotContainer {
   ArmDownCommand m_armDownCommand = new ArmDownCommand(m_armSubsystem);
   ArmUpCommand m_armUpCommand = new ArmUpCommand(m_armSubsystem);
   IntakeInCommand m_intakeCommand = new IntakeInCommand(m_intakeSubsystem);
+  IntakeOutCommand m_intakeOutCommand = new IntakeOutCommand(m_intakeSubsystem);
   IntakeOverrideCommand m_IntakeOverrideCommand = new IntakeOverrideCommand(m_intakeSubsystem);
   ShooterCommand m_shooterCommand = new ShooterCommand(m_shooterSubsystem);
   AlignToTagCmd m_alignToTagCmd = new AlignToTagCmd(m_swerveSubsystem);
@@ -66,10 +77,13 @@ public class RobotContainer {
     //autoChooser.addOption("example", m_exampleAuto);
 
     // SmartDashboard.putData("Autos", autoChooser);
-    //SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
-    configureBindings();
+  
 
+    NamedCommands.registerCommand("shoot", m_shooterSubsystem.shooterShoot());
+
+    configureBindings();
   }
 
   /**
@@ -100,6 +114,10 @@ public class RobotContainer {
       m_intakeCommand
       );
 
+    m_driverController.leftBumper().whileTrue(
+      m_intakeOutCommand
+    );
+
     m_driverController.rightTrigger().whileTrue(
       m_IntakeOverrideCommand
     );
@@ -107,6 +125,8 @@ public class RobotContainer {
     m_driverController.a().whileTrue(
       m_shooterCommand
       );
+
+
 
     // m_driverController.leftBumper().whileTrue(
     //   m_alignToTagCmd
@@ -120,16 +140,30 @@ public class RobotContainer {
    * @return the command to run in autonomous
    * 
    */
+
+     List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+      new Pose2d(0,0, Rotation2d.fromDegrees(30)),
+      new Pose2d(0, 0, Rotation2d.fromDegrees(60)),
+      new Pose2d(0, 0, Rotation2d.fromDegrees(90))
+    );
   
 
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("Auto1");
-    // autoChooser = AutoBuilder.buildAutoChooser();
+    //autoChooser = AutoBuilder.buildAutoChooser();
     // Load the path you want to follow using its name in the GUI
-    // PathPlannerPath path = PathPlannerPath.fromPathFile("Path1");
+
+
+
+    PathPlannerPath path = new PathPlannerPath(
+      bezierPoints,
+      new PathConstraints(1, 1, 1, 1), 
+      new GoalEndState(0, Rotation2d.fromDegrees(90)));
+
+
     m_swerveSubsystem.resetPose();
     // // Create a path following command using AutoBuilder. This will also trigger event markers.
-    // return AutoBuilder.followPathWithEvents(path);
+    // return AutoBuilder.followPath(path);
     //return autoChooser.getSelected();
     return autoChooser.getSelected();
   }

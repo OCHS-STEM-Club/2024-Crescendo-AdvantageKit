@@ -4,11 +4,16 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -47,7 +52,7 @@ public class SwerveSubsystem extends SubsystemBase {
     DriveConstants.kRearRightDriveID, DriveConstants.kRearRightTurnID, DriveConstants.kRearRightEncoderID, DriveConstants.kRearRightMagneticOffset, DriveConstants.kRearRightDriveInverted, "RR");
   
 
-
+    
 
   // private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
     private final Pigeon2 m_gyro = new Pigeon2(1);
@@ -114,8 +119,9 @@ public class SwerveSubsystem extends SubsystemBase {
     Logger.recordOutput("Robot Pose", getPose());
 
     SmartDashboard.putNumber("Pigeon Heading", m_gyro.getAngle());
-  }
 
+    
+    }
   
 
   public Rotation2d getHeading() {
@@ -204,4 +210,5 @@ public class SwerveSubsystem extends SubsystemBase {
     m_rearLeftModule.stop();
     m_rearRightModule.stop();
   }
+
 }

@@ -23,7 +23,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public IntakeSubsystem() {
     intakeMotor = new CANSparkMax(Constants.IntakeConstants.kIntakeMotorID, MotorType.kBrushless);
-    intakeSensor = new DigitalInput(9);
+    intakeSensor = new DigitalInput(0);
     }
   
 
@@ -41,6 +41,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void intakeOff() {
     intakeMotor.set(0);
+  }
+
+  public void intakeOut() {
+    intakeMotor.set(-0.25);
   }
 
   public boolean beamBreakSensor() {
