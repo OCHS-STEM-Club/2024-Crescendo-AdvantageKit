@@ -32,6 +32,7 @@ import frc.robot.commands.IntakeInCommand;
 import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.IntakeOverrideCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -72,6 +73,8 @@ public class RobotContainer {
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(m_driveTeleopCmd);
     autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser.addOption(
+      "TurnToAngle", new TurnToAngle(m_swerveSubsystem, -90, false));
    
     // autoChooser = AutoBuilder.buildAutoChooser("New Auto");
     //autoChooser.addOption("example", m_exampleAuto);

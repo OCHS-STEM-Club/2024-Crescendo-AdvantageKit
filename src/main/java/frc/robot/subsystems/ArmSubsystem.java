@@ -4,17 +4,13 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FollowerType;
-import com.ctre.phoenix.motorcontrol.GroupMotorControllers;
-import com.ctre.phoenix6.controls.Follower;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
@@ -32,6 +28,8 @@ public class ArmSubsystem extends SubsystemBase {
     armMotorRight.setIdleMode(IdleMode.kBrake);
     armMotorLeft.setInverted(false);
     armMotorRight.setInverted(false);
+    armMotorRight.setSmartCurrentLimit(30, 15);
+    armMotorLeft.setSmartCurrentLimit(30, 15);
     
     armMotorLeft.follow(armMotorRight);
     
